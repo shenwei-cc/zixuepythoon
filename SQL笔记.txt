@@ -1,0 +1,310 @@
+{t: 1572837223270, userNo: "cqycsm",…}
+captcha
+:
+""
+password
+:
+"Lr+Gy5onVByTPhCXtabp5C8M7VHTbPbyvEhD2xV8x1MJU4U5FXFqcMF2qfvS5UAnQKGAZhOpU/f+M/eSyVLoOLzeW42seHPWEwxAZCeURuMqrwrQ641PHwBQjSNAE+/NTseawq4FClNpFLvJvHRJ9rKlV8DW5AmY/T0dRDNBWbM="
+t
+:
+1572837223270
+userNo
+:
+"cqycsm"
+uuid
+:
+"2a51081f-60b1-4427-8717-f418200aa4df"
+nox18892354
+eshjavot
+
+
+select * from user_tab;   --查询所有表
+select user_id,name,phone,email from user_tab;  
+
+select user_id "用户编号",name "用户姓名",phone "电话",email "邮箱" from user_tab;
+
+select  name||'的电话'|| phone  from  user_tab;  
+
+select * from user_tab where user_id ='z';
+
+select * from user_tab where user_id like 'z%'; 
+
+select * from user_tab where user_id like '%m%';
+
+select * from user_tab where phone like '%2';
+
+select * from user_tab 
+where user_id like 'z__';
+
+select * from user_tab where user_id != 'admin';
+select * from user_tab 
+where user_id <> 'admin';
+
+
+----------------语法
+select * from 表名;  --*代表所有的列  
+select 列1名,列2名...  from 表名;  -----查询表中指定列的信息
+select 列名 "别名"  from 表名;  -----------给查询出的列取别名
+select 列1||'dkfdk' ||列2||... from 表名;  ---------- ||连接符，用来连接列
+
+---根据查询条件来查询，查询条件中区分大小写
+select 列名1,列名2... from 表名 where 列名1 操作符 '搜索值';
+操作符：
+=   精确匹配，精确查询
+like 模糊查询； %代表0个或多个任意字符    _只代表1个任意字符
+!=  <>  两个不等于操作符
+ 
+ 
+
+    练习1：
+    1.select * from user_tab where comm is null;  --空值是is null
+    2.查询条件中区分大小写
+    3.去除重复的行，要在查询的列前也就是select后面加一个distinct关键字
+      select distinct job,deptno "总工资" from emp;
+    4.查询出来的数值类型的列可以进行加减乘除等运算 
+       select ename,sal,comm,sal+comm "总工资" from emp;
+   
+   
+   多条件的操作符：
+   and 并且，查询的是满足两边条件的数据
+   or 或者，查询出满足任何其中一个条件的数据
+   in() 查询出在括号中列出的值的数据，等价于多个or连接在一起
+   between ... and ... --通常用在数值类型的列上，代表的是闭区间，等价于>=.. and <=...
+   not()  括号中一般扩的是查询条件，意思就是查询条件取反
+
+----------------排序
+查询语句 order by 列名1,列名2...  ----先根据第一列来排，排完之后再按照第二列来排，每一列都可以单独指定
+是按升序排还是降序排
+升序的关键字 asc
+降序的关键字 desc 
+
+-----------------------
+多条件查询例子：
+select * from user_tab where not(name='吴妹' or name='赵锋' or name='张震') ;
+
+select * from user_tab where not(name in('吴妹','赵锋','张震'));
+
+select * from user_tab where name='吴妹' or '赵锋' or '张震';
+
+select * from emp where sal>=1000 and sal<=3000;
+
+select * from emp where not(sal between 1500 and 2600); ----闭区间[1500,2600]
+
+select * from emp order by sal;  ----默认从小到大排序
+
+select * from emp order by sal desc;  ---desc降序的关键字
+
+select * from emp order by sal asc;   ---asc升序的关键字
+
+select * from emp order by job desc,sal asc;
+
+select * from emp where job in('CLERK','SALESMAN') order by sal;
+
+
+----------------------------DML
+select * from user_tab;
+
+
+
+事务：DML语言会开启一个事务
+事务就是用来保证数据的一致性，也就是说事务里面的操作要么全成功，要么全失败
+事务的特点：
+1.原子性：事务里的操作要么全成功，要么全失败，是统一的
+2.隔离性：事务结束之前都只对当前窗口有效，其他的窗口都看不到事务里的操作；
+3.永久性：事务结束后，里面的操作永久有效；
+4.一致性：事务结束后，所有的用户所有的窗口看到的数据都是一样；
+
+
+insert into user_tab 
+values('bbb1','bbb2','bbb3','15133332222','bbb@163.com',sysdate);  ---往表里插入一条数据
+
+commit;  --提交
+
+insert into user_tab 
+values('cc1','cc2','cc3','15133332222','bbb@163.com',sysdate);
+
+rollback;  ---回滚
+
+--往表里插入数据，语法
+insert into 表名 values(值1,值2...);  ---插入的值的个数一定要跟表中列的个数一致，而且要类型一致
+insert into 表名(列名1,列名2...)  values(列1的值,列2的值,...); ---往表中指定的列插入值
+
+insert into user_tab(user_id,name, passwd, create_date) values('dd1','dd2','dd3',sysdate);
+
+dual  ----oracle自带的一个表，它是一个虚表；用来做一些跟表中数据无关的操作，比如查询当前系统时间，比如做一些简单的运算
+
+select sysdate+1 from dual;  
+
+select 2225+444 from dual;
+
+select * from user_tab;
+
+-----修改用户编号是dd1的用户信息，将密码改为 222，电话改为15111111111，邮箱  222@qq.com
+update user_tab set passwd='222',phone='15122222222',email='333@qq.com' 
+where user_id='dd1';
+
+commit;
+
+----------------更新数据,语法
+update 表名  set 列名1=列1新的值,列名2=列2新的值... where 查询条件;
+
+--------------删除数据 
+
+------删除用户编号是5的用户
+-----------------语法
+delete from 表名 where 查询条件;
+
+select * from user_tab;
+
+delete from user_tab where user_id='5';
+
+commit;
+
+--------截断表
+truncate table item;  ---截断表，删除整表数据，不会开启一个事务，直接删除整表数据
+
+
+--在事务中可以设置保存点，回滚的时候可指定回滚到哪一个保存点，回滚掉的是保存点后面的操作，前面的操作还保留
+savepoint 保存点名;
+
+rollback to 保存点名;  --指定回滚到哪一个保存点
+
+------------------DDL
+---创建表
+create table wuwu(
+id varchar2(30),
+name varchar2(30),
+age number(3)
+);  
+
+------------修改表
+alter table wuwu add(phone varchar2(12));  ---给表增加1列，列名叫做phone 
+-----给表添加列
+alter table 表名 add(列名 数据类型(取值范围),...);
+----------修改表中的列； 常用在改列的取值范围
+alter table wuwu modify(name varchar2(50)); ---修改name列的取值范围
+------------删除表中的列
+alter table wuwu drop column phone;
+-----删除列的语法
+alter table 表名 drop column 列1名,列2名...;
+
+---------删除表
+drop table wuwu;
+drop table 表名; ---删除表
+
+
+select * from wuwu; 
+
+desc wuwu;  ----查询表结构的命令
+
+---建表的语法
+create table 表名(
+列1名 数据类型(取值范围),
+列2名 数据类型(取值范围),...
+);        ----最后一个列不用加逗号
+
+表名和列名的命名规则：
+1.必须以字母开头;
+2.长度要在1~30个字符之间
+3.只能包含A~Z、a~z、0~9、_ $ #
+4.不能和已经定义的对象重名
+5.不能用关键字当表名
+
+
+-----------表的约束
+1.主键约束：用来唯一标识一行数据; 主键的值要唯一，不能重复，不能为空；
+2.非空约束：列的取值不能为空
+3.唯一约束：列的值不能重复要唯一，列的值可以为空；
+4.外键约束：外键的值必须是另一个表中的主键，外键的值必须来源于另一个表
+5.检查约束：设一个检查条件，列的值要在这个检查条件内，符合检查条件  
+
+省份表：省份id，省份名字  34个省份    江明
+人：身份证号、名字、手机号、性别、年龄、省份、QQ。。。。
+身份证号：主键
+名字：非空约束
+手机号、QQ：唯一约束
+性别：检查约束（男  女）
+年龄：青年人  检查约束（年龄范围（18~30））
+
+省份表：省份id，省份名字
+公民表：
+
+---------建表的时候来创建约束
+
+create table province(
+pro_id varchar2(10),
+pro_name varchar2(30), 
+primary key(pro_id)
+);
+
+insert into province values('101','浙江');   610  210  
+
+select * from province;
+
+create table human(
+id varchar2(20),  ---身份证号
+name  varchar2(30) not null,  ---姓名    非空约束 not null
+sex char(1),   ------性别，   W 代表女的， M代表的男的
+age number(3),  ---年龄
+pro_id1 varchar2(10),   ----所在的省
+bank_id varchar2(20),   ----银行卡号
+telephone varchar2(11),   ----手机号  
+primary key(id),   -------主键
+unique(bank_id),      -----唯一约束
+check(sex in('W','M')),   --------检查约束
+foreign key(pro_id1) references province(pro_id)   ------外键约束
+);
+
+insert into human values('210211198303031238','wuwu','M',
+32,'104',null,'18222222222');
+
+select * from province;  ---父表
+
+select * from human;    ---子表
+
+------约束的使用方法
+1.在创建的表的时候把约束建上   -------推荐使用
+2.在建表之后也可以来添加约束 
+
+drop table human;
+
+create table human(
+id varchar2(20),  ---身份证号
+name  varchar2(30),  ---姓名   
+sex char(1),   ------性别，   W 代表女的， M代表的男的
+age number(3),  ---年龄
+pro_id1 varchar2(10),   ----所在的省
+bank_id varchar2(20),   ----银行卡号
+telephone varchar2(11)
+);
+----添加主键约束
+alter tabl  e human add(primary key(id));
+----添加唯一约束
+alter table human add(unique(bank_id));
+-----------添加非空约束
+alter table human modify(name  varchar2(30) not null);   ----非空约束比较特殊
+---------添加检查约束
+alter table human add(check(sex in('W','M')));
+----------添加外键约束
+alter table human add(foreign key(pro_id1) references province(pro_id));
+
+
+----表放在表空间中  
+create tablespace wuwu0515 datafile 'E:\wuwu0515.dbf' size 100M 
+autoextend on next 10M maxsize 200M;  
+------语法
+create tablespace 表空间名 datafile '路径+文件名.dbf' size x1m 
+autoextend on next x2m maxsize x3m;
+x1  -----默认大小
+x2  ----每次自动扩展的大小
+x3  ----表空间最大的大小
+
+create table wuwu3(
+id varchar2(20)
+)tablespace wuwu0515;
+
+alter table wu1 move tablespace wuwu0515;
+
+select * from wuwu3;
+
+select * from user_tables;
